@@ -1,28 +1,30 @@
 pub mod router;
-pub mod switch;
 pub mod devices;
 pub mod ip_address;
 
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
-    use crate::file_system::directory::Directory;
 
-    use super::devices::device::Device;
-    use super::devices::computer::Computer;
-    use super::switch::*;
+    use super::devices::{device::Device, nid::NID};
     use super::router::*;
     use super::ip_address::*;
 
     #[test]
-    fn rand_ips_generated() {
-        let mut switch = Switch::new(IpAddress::new(2431, 152, 0), HashMap::new());
-        let mut router = Router::new(IpAddress::new(2431, 0, 0), HashMap::new());
+    fn gen_rand_ips() {
+        let mut router = Router::new(IpAddress::new(42690, 167, 0), HashMap::new());
 
-        assert_ne!(switch.gen_new_ip_address(), switch.gen_new_ip_address());
-        assert_ne!(switch.gen_new_ip_address(), switch.gen_new_ip_address());
+        for i in 0..255 {
+            assert_eq!(Ok(()), router.add_device(Device::NID(NID::new(format!("NID_{}", i), IpAddress::default()))))
+        }
 
-        assert_ne!(router.gen_new_ip_address(), router.gen_new_ip_address());
-        assert_ne!(router.gen_new_ip_address(), router.gen_new_ip_address());
+        assert_ne!(Ok(()), router.add_device(Device::NID(NID::new(format!("NID_{}", 256), IpAddress::default()))));
+
+        //this ensures that all of the device portion of the ips are unique
+        let mut ips: Vec<u8> = router.get_devices().iter().map(|d| d.get_ip_address().device()).collect();
+        assert_eq!(255, ips.len());
+        ips.sort();
+        ips.dedup();
+        assert_eq!(255, ips.len());
     }
 }
