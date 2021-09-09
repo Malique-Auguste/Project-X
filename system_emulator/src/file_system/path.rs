@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Hash, Default)]
 pub struct Path {
     inner: Vec<String>
 }

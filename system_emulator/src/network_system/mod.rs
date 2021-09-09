@@ -1,7 +1,6 @@
 pub mod router;
 pub mod switch;
-pub mod computer;
-pub mod device;
+pub mod devices;
 pub mod ip_address;
 
 #[cfg(test)]
@@ -9,8 +8,8 @@ mod tests {
     use std::collections::HashMap;
     use crate::file_system::directory::Directory;
 
-    use super::device::Device;
-    use super::computer::Computer;
+    use super::devices::device::Device;
+    use super::devices::computer::Computer;
     use super::switch::*;
     use super::router::*;
     use super::ip_address::*;

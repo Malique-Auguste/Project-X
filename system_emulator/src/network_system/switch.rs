@@ -1,7 +1,7 @@
 use std::collections::{HashMap};
 
 use crate::network_system::ip_address::{IpAddress, HasIP};
-use crate::network_system::device::Device;
+use crate::network_system::devices::device::Device;
 use crate::helper::rand_u8_with_exclusion;
 
 #[derive(Clone, PartialEq, Eq)]

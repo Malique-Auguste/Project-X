@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::network_system::switch::Switch;
-use crate::network_system::device::Device;
+use crate::network_system::devices::device::Device;
 use crate::network_system::ip_address::{HasIP, IpAddress};
 use crate::helper::rand_u8_with_exclusion;
 
