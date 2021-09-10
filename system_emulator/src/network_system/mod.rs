@@ -1,6 +1,6 @@
 pub mod router;
 pub mod devices;
-pub mod ip_address;
+pub mod network_node;
 
 #[cfg(test)]
 mod tests {
@@ -8,17 +8,17 @@ mod tests {
 
     use super::devices::{device::Device, nid::NID};
     use super::router::*;
-    use super::ip_address::*;
+    use super::network_node::{NetworkNode, IpAddress, Status};
 
     #[test]
     fn gen_rand_ips() {
-        let mut router = Router::new(IpAddress::new(42690, 167, 0), HashMap::new());
+        let mut router = Router::new(IpAddress::new(42690, 167, 0), "".into(), "".into(), Status::Online, HashMap::new());
 
         for i in 0..255 {
-            assert_eq!(Ok(()), router.add_device(Device::NID(NID::new(format!("NID_{}", i), IpAddress::default()))))
+            assert_eq!(Ok(()), router.add_device(Device::NID(NID::new(IpAddress::default(), format!("NID_{}", i), "".into(), Status::Online))))
         }
 
-        assert_ne!(Ok(()), router.add_device(Device::NID(NID::new(format!("NID_{}", 256), IpAddress::default()))));
+        assert_ne!(Ok(()), router.add_device(Device::NID(NID::new(IpAddress::default(), "NID_256".into(), "".into(), Status::Online))));
 
         //this ensures that all of the device portion of the ips are unique
         let mut ips: Vec<u8> = router.get_devices().iter().map(|d| d.get_ip_address().device()).collect();

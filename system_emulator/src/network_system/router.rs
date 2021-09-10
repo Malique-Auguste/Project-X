@@ -1,19 +1,23 @@
-use std::collections::hash_map::{HashMap, Values};
+use std::collections::hash_map::HashMap;
 
-use crate::network_system::ip_address::{IpAddress, HasIP};
-use crate::network_system::devices::device::Device;
+use super::network_node::*;
+use super::devices::device::Device;
 use crate::helper::rand_u8_with_exclusion;
 
 #[derive(Clone, PartialEq, Eq)]
 pub struct Router {
-    devices: HashMap<IpAddress, Device>,
     ip_address: IpAddress,
-    new_devices_cache: Vec<u8>
+    name: String,
+    password: String,
+    status: Status,
+
+    devices: HashMap<IpAddress, Device>,
+    new_devices_cache: Vec<u8>,
 }
 
 impl Router {
-    pub fn new(ip_address: IpAddress, devices: HashMap<IpAddress, Device>, ) -> Router {
-        Router {devices, ip_address, new_devices_cache: Vec::with_capacity(8)}
+    pub fn new(ip_address: IpAddress, name: String, password: String, status: Status, devices: HashMap<IpAddress, Device>) -> Router {
+        Router {ip_address, name, password: password.into(), status, devices, new_devices_cache: Vec::with_capacity(8)}
     }
 
     pub fn gen_new_ip_address(&mut self) -> Result<IpAddress, ()> {
@@ -60,12 +64,36 @@ impl Router {
     }
 }
 
-impl HasIP for Router {
+impl NetworkNode for Router {
     fn get_ip_address(&self) -> &IpAddress {
         &self.ip_address
     }
 
     fn set_ip_address(&mut self, ip_address: IpAddress) {
         self.ip_address = ip_address;
+    }
+
+    fn get_name(&self) -> &str {
+        &self.name
+    }
+
+    fn set_name(&mut self, name: String) {
+        self.name = name;
+    }
+
+    fn get_password(&self) -> &str {
+        &self.password
+    }
+
+    fn set_password(&mut self, password: String) {
+        self.password = password;
+    }
+
+    fn get_status(&self) -> &Status {
+        &self.status
+    }
+
+    fn set_status(&mut self, status: Status) {
+        self.status = status;
     }
 }
