@@ -1,5 +1,6 @@
 use std::fmt;
 
+//All objects that can be a part of a network must implement NetworkNode
 pub trait NetworkNode {
     fn get_ip_address(&self) -> &IpAddress;
     fn set_ip_address(&mut self, ip_address: IpAddress);

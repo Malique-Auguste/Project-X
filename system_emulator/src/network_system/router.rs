@@ -12,7 +12,11 @@ pub struct Router {
     status: Status,
 
     devices: HashMap<IpAddress, Device>,
-    new_devices_cache: Vec<u8>,
+    /*
+    Caches the device value of new ip_adresses to avoid having to generate new values everytime,
+    because this process is resource intensive
+    */
+    new_devices_cache: Vec<u8>,                 
 }
 
 impl Router {
@@ -20,6 +24,7 @@ impl Router {
         Router {ip_address, name, password: password.into(), status, devices, new_devices_cache: Vec::with_capacity(8)}
     }
 
+    //generates a random ip for a new device that hasn't been used before 
     pub fn gen_new_ip_address(&mut self) -> Result<IpAddress, ()> {
         if self.devices.len() >= 255 {
             //a maximum number of devices are already connected to the switch

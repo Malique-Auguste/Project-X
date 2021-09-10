@@ -1,3 +1,4 @@
+//Represents the type of encryption that a file or directory can have
 #[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub enum Encryption {
     None,
