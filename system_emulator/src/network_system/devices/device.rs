@@ -1,5 +1,5 @@
-use crate::network_system::network_node::*;
 use super::{computer::Computer, nid::NID, scanner::Scanner, sensor::Sensor, sentry::Sentry};
+use crate::network_system::network_node::*;
 
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub enum Device {
@@ -17,7 +17,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => &nid.ip_address,
             Device::Scanner(scan) => &scan.ip_address,
             Device::Sensor(sens) => &sens.ip_address,
-            Device::Sentry(sent) => &sent.ip_address
+            Device::Sentry(sent) => &sent.ip_address,
         }
     }
 
@@ -27,7 +27,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => nid.ip_address = ip_address,
             Device::Scanner(scan) => scan.ip_address = ip_address,
             Device::Sensor(sens) => sens.ip_address = ip_address,
-            Device::Sentry(sent) => sent.ip_address = ip_address
+            Device::Sentry(sent) => sent.ip_address = ip_address,
         }
     }
 
@@ -37,7 +37,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => &nid.name,
             Device::Scanner(scan) => &scan.name,
             Device::Sensor(sens) => &sens.name,
-            Device::Sentry(sent) => &sent.name
+            Device::Sentry(sent) => &sent.name,
         }
     }
 
@@ -47,7 +47,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => nid.name = name,
             Device::Scanner(scan) => scan.name = name,
             Device::Sensor(sens) => sens.name = name,
-            Device::Sentry(sent) => sent.name = name
+            Device::Sentry(sent) => sent.name = name,
         }
     }
 
@@ -57,7 +57,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => &nid.password,
             Device::Scanner(scan) => &scan.password,
             Device::Sensor(sens) => &sens.password,
-            Device::Sentry(sent) => &sent.password
+            Device::Sentry(sent) => &sent.password,
         }
     }
 
@@ -67,7 +67,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => nid.password = password,
             Device::Scanner(scan) => scan.password = password,
             Device::Sensor(sens) => sens.password = password,
-            Device::Sentry(sent) => sent.password = password
+            Device::Sentry(sent) => sent.password = password,
         }
     }
 
@@ -77,7 +77,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => &nid.status,
             Device::Scanner(scan) => &scan.status,
             Device::Sensor(sens) => &sens.status,
-            Device::Sentry(sent) => &sent.status
+            Device::Sentry(sent) => &sent.status,
         }
     }
 
@@ -87,7 +87,7 @@ impl NetworkNode for Device {
             Device::NID(nid) => nid.status = status,
             Device::Scanner(scan) => scan.status = status,
             Device::Sensor(sens) => sens.status = status,
-            Device::Sentry(sent) => sent.status = status
+            Device::Sentry(sent) => sent.status = status,
         }
     }
 }

@@ -5,12 +5,16 @@ pub struct Sensor {
     pub(super) ip_address: IpAddress,
     pub(super) name: String,
     pub(super) password: String,
-    pub(super) status: Status
-
+    pub(super) status: Status,
 }
 
 impl Sensor {
     pub fn new(ip_address: IpAddress, name: String, password: String, status: Status) -> Sensor {
-        Sensor{ip_address, name, password, status}
+        Sensor {
+            ip_address,
+            name,
+            password,
+            status,
+        }
     }
 }

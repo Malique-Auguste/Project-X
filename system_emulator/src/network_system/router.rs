@@ -1,7 +1,7 @@
 use std::collections::hash_map::HashMap;
 
-use super::network_node::*;
 use super::devices::device::Device;
+use super::network_node::*;
 use crate::helper::rand_u8_with_exclusion;
 
 #[derive(Clone, PartialEq, Eq)]
@@ -16,21 +16,32 @@ pub struct Router {
     Caches the device value of new ip_adresses to avoid having to generate new values everytime,
     because this process is resource intensive
     */
-    new_devices_cache: Vec<u8>,                 
+    new_devices_cache: Vec<u8>,
 }
 
 impl Router {
-    pub fn new(ip_address: IpAddress, name: String, password: String, status: Status, devices: HashMap<IpAddress, Device>) -> Router {
-        Router {ip_address, name, password: password.into(), status, devices, new_devices_cache: Vec::with_capacity(8)}
+    pub fn new(
+        ip_address: IpAddress,
+        name: String,
+        password: String,
+        status: Status,
+        devices: HashMap<IpAddress, Device>,
+    ) -> Router {
+        Router {
+            ip_address,
+            name,
+            password,
+            status,
+            devices,
+            new_devices_cache: Vec::with_capacity(8),
+        }
     }
 
-    //generates a random ip for a new device that hasn't been used before 
-    pub fn gen_new_ip_address(&mut self) -> Result<IpAddress, ()> {
+    //generates a random ip for a new device that hasn't been used before
+    pub fn gen_new_ip_address(&mut self) -> Result<IpAddress, &'static str> {
         if self.devices.len() >= 255 {
-            //a maximum number of devices are already connected to the switch
-            return Err(())
-        }
-        else {
+            Err("A maximum number of devices are already connected to the router")
+        } else {
             let device = match self.new_devices_cache.pop() {
                 Some(x) => x,
                 None => {
@@ -40,7 +51,11 @@ impl Router {
                 }
             };
 
-            return Ok(IpAddress::new(u16::from_be_bytes(self.ip_address.router()), self.ip_address.switch(), device))
+            Ok(IpAddress::new(
+                u16::from_be_bytes(self.ip_address.location()),
+                self.ip_address.router(),
+                device,
+            ))
         }
     }
 
@@ -56,11 +71,10 @@ impl Router {
         self.devices.get_mut(ip_address)
     }
 
-    pub fn add_device(&mut self, mut device: Device) -> Result<(), &str> {
-        let ip_address = self.gen_new_ip_address();
-        let ip_address = match ip_address {
+    pub fn add_device(&mut self, mut device: Device) -> Result<(), &'static str> {
+        let ip_address = match self.gen_new_ip_address() {
             Ok(ip) => ip,
-            Err(_) => return Err("A maximum number of devices are already connected to the switch")
+            Err(e) => return Err(e),
         };
 
         device.set_ip_address(ip_address);

@@ -14,43 +14,53 @@ pub trait NetworkNode {
 
 impl fmt::Display for dyn NetworkNode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} {} {}", self.get_name(), self.get_ip_address(), self.get_status())
+        write!(
+            f,
+            "{} {} {}",
+            self.get_name(),
+            self.get_ip_address(),
+            self.get_status()
+        )
     }
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub enum Status {
     Online,
-    Offline
+    Offline,
 }
 
 impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Status::Online => write!(f, "Online"),
-            Status::Offline => write!(f, "Offline")
+            Status::Offline => write!(f, "Offline"),
         }
     }
 }
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Hash, Default)]
-pub struct IpAddress{
-    router: [u8; 2],
-    switch: u8,
-    device: u8
+pub struct IpAddress {
+    location: [u8; 2],
+    router: u8,
+    device: u8,
 }
 
 impl IpAddress {
-    pub fn new(router: u16, switch: u8, device: u8) -> IpAddress {
-        IpAddress{ router: router.to_be_bytes(), switch, device}
+    pub fn new(location: u16, router: u8, device: u8) -> IpAddress {
+        IpAddress {
+            location: location.to_be_bytes(),
+            router,
+            device,
+        }
     }
 
-    pub fn router(&self) -> [u8; 2] {
+    pub fn location(&self) -> [u8; 2] {
+        self.location
+    }
+
+    pub fn router(&self) -> u8 {
         self.router
-    }
-
-    pub fn switch(&self) -> u8 {
-        self.switch
     }
 
     pub fn device(&self) -> u8 {
@@ -60,6 +70,10 @@ impl IpAddress {
 
 impl fmt::Display for IpAddress {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}.{}.{}.{}", self.router[0], self.router[1], self.switch, self.device)
+        write!(
+            f,
+            "{}.{}.{}.{}",
+            self.location[0], self.location[1], self.router, self.device
+        )
     }
 }
